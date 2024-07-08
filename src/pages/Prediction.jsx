@@ -54,7 +54,7 @@ const Prediction = () => {
     };
 
     try {
-      const response = await fetch("YOUR_BACKEND_URL_HERE/predict", {
+      const response = await fetch("http://127.0.0.1:8000/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,9 +63,18 @@ const Prediction = () => {
       });
       if (response.ok) {
         const data = await response.json();
+        const predictedClass = data["Predicted Class"];
+        let predictionResult;
+      
+        if (predictedClass === 1) {
+          predictionResult = "Loan Approved";
+        } else {
+          predictionResult = "Loan Not Approved";
+        }
+      
         Swal.fire({
-          title: "Success",
-          text: `Predicted Class: ${data["Predicted Class"]}`,
+          title: "Prediction Result",
+          text: predictionResult,
           icon: "success",
           confirmButtonText: "OK",
         });
