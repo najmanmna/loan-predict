@@ -18,9 +18,6 @@ const NavbarComponent = () => {
             <Nav.Link as={Link} to="/prediction">
               Prediction
             </Nav.Link>
-            <Nav.Link as={Link} to="/performance">
-              Performance Analysis
-            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

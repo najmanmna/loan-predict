@@ -13,34 +13,59 @@ const Prediction = () => {
     coapplicantIncome: "",
     loanAmount: "",
     loanAmountTerm: "",
-    creditHistory: "",
+    creditHistory: false,
     propertyArea: "",
   });
   console.log(formData);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Map form data to backend format
+    const backendData = {
+      income: parseFloat(formData.applicantIncome),
+      coapplicant_income: parseFloat(formData.coapplicantIncome),
+      loan_amount: parseFloat(formData.loanAmount),
+      loan_amount_term: parseFloat(formData.loanAmountTerm),
+      credit_history: formData.creditHistory ? 1 : 0,
+      gender_male: formData.gender === "Male" ? 1 : 0,
+      gender_female: formData.gender === "Female" ? 1 : 0,
+      married_yes: formData.married === "Yes" ? 1 : 0,
+      married_no: formData.married === "No" ? 1 : 0,
+      dependents_0: formData.dependents === "0" ? 1 : 0,
+      dependents_1: formData.dependents === "1" ? 1 : 0,
+      dependents_2: formData.dependents === "2" ? 1 : 0,
+      dependents_3_plus: formData.dependents === "3+" ? 1 : 0,
+      education_graduate: formData.education === "Graduate" ? 1 : 0,
+      education_not_graduate: formData.education === "Not Graduate" ? 1 : 0,
+      self_employed_yes: formData.selfEmployed === "Yes" ? 1 : 0,
+      self_employed_no: formData.selfEmployed === "No" ? 1 : 0,
+      property_area_rural: formData.propertyArea === "Rural" ? 1 : 0,
+      property_area_semiurban: formData.propertyArea === "Semi Urban" ? 1 : 0,
+      property_area_urban: formData.propertyArea === "Urban" ? 1 : 0,
+    };
+
     try {
-      const response = await fetch("YOUR_BACKEND_URL_HERE", {
+      const response = await fetch("YOUR_BACKEND_URL_HERE/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(backendData),
       });
       if (response.ok) {
         const data = await response.json();
         Swal.fire({
           title: "Success",
-          text: data.message,
+          text: `Predicted Class: ${data["Predicted Class"]}`,
           icon: "success",
           confirmButtonText: "OK",
         });
@@ -214,15 +239,8 @@ const Prediction = () => {
               type="checkbox"
               name="creditHistory"
               id="creditHistory"
-              checked={formData.creditHistory === "1"}
-              onChange={(e) =>
-                handleChange({
-                  target: {
-                    name: "creditHistory",
-                    value: e.target.checked ? "1" : "0",
-                  },
-                })
-              }
+              checked={formData.creditHistory}
+              onChange={handleChange}
             />{" "}
             I agree with the credit history guidelines
           </label>

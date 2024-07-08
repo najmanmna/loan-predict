@@ -1,7 +1,7 @@
 import React from "react";
 
 const PerformanceAnalysis = () => {
-  return <div>PerformanceAnalysis</div>;
+  return <div></div>;
 };
 
 export default PerformanceAnalysis;
