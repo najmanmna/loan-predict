@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import numpy as np
 import joblib
 
+
 # Load the trained model
 model = joblib.load(r'E:\Semester6\ML_OEL\loan_prediction_model.joblib')
 
