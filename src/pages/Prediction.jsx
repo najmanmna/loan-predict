@@ -65,25 +65,30 @@ const Prediction = () => {
         const data = await response.json();
         const predictedClass = data["Predicted Class"];
         let predictionResult;
-      
+
         if (predictedClass === 1) {
           predictionResult = "Loan Approved";
+          Swal.fire({
+            title: "Prediction Result",
+            text: predictionResult,
+            icon: "success",
+            confirmButtonText: "OK",
+          });
         } else {
           predictionResult = "Loan Not Approved";
+          Swal.fire({
+            title: "Prediction Result",
+            text: predictionResult,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
-      
-        Swal.fire({
-          title: "Prediction Result",
-          text: predictionResult,
-          icon: "success",
-          confirmButtonText: "OK",
-        });
       } else {
         const errorData = await response.json();
         Swal.fire({
           title: "Error",
           text: errorData.message || response.statusText,
-          icon: "error",
+          icon: "warning",
           confirmButtonText: "OK",
         });
       }
@@ -91,7 +96,7 @@ const Prediction = () => {
       Swal.fire({
         title: "Error",
         text: error.message,
-        icon: "error",
+        icon: "warning",
         confirmButtonText: "OK",
       });
     }
